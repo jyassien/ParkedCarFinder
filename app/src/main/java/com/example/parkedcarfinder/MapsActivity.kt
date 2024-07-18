@@ -2,11 +2,16 @@ package com.example.parkedcarfinder
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DrawableRes
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -18,9 +23,23 @@ import com.example.parkedcarfinder.databinding.ActivityMapsBinding
 
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.Marker
+
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    private val fusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(this)
+    }
+
+
+    private var marker: Marker? = null
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -57,6 +76,63 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     // Added methods
     private fun getLocation() {
         Log.d("MapsActivity", "getLocation() called.")
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+                location: Location? ->
+            location?.let {
+                val userLocation = LatLng(location.latitude, location.longitude)
+                val CO = LatLng(39.0, -105.0)
+                updateMapLocation(CO)
+                addMarkerAtLocation(CO, "You In Colorado")
+            }}
+    }
+
+    private fun updateMapLocation(location: LatLng) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 7f))
+    }
+
+//    private fun addMarkerAtLocation(location: LatLng, title: String)
+//    {
+//        mMap.addMarker(MarkerOptions().title(title).position(location))
+//    }
+        private fun addMarkerAtLocation(
+            location: LatLng, title: String,
+            markerIcon: BitmapDescriptor? = null
+        ) = mMap.addMarker(
+            MarkerOptions().title(title).position(location)
+                .apply { markerIcon?.let { icon(markerIcon) } }
+        )
+
+    private fun getBitmapDescriptorFromVector(@DrawableRes
+                                              vectorDrawableResourceId: Int): BitmapDescriptor? {
+        val bitmap = ContextCompat.getDrawable(this,
+            vectorDrawableResourceId)?.let { vectorDrawable ->
+            vectorDrawable.setBounds(0, 0,
+                vectorDrawable.intrinsicWidth,
+                vectorDrawable.intrinsicHeight)
+            val drawableWithTint = DrawableCompat
+                .wrap(vectorDrawable)
+            DrawableCompat.setTint(drawableWithTint,
+                Color.RED)
+            val bitmap = Bitmap.createBitmap(
+                vectorDrawable.intrinsicWidth,
+                vectorDrawable.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(bitmap)
+            drawableWithTint.draw(canvas)
+            bitmap
+        }?: return null
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
+            .also { bitmap?.recycle() }
+    }
+
+
+    private fun addOrMoveSelectedPositionMarker(latLng: LatLng) {
+        if (marker == null) {
+            marker = addMarkerAtLocation(latLng, "Park Here",
+                getBitmapDescriptorFromVector(R.drawable.parking_icon)
+            )
+        } else { marker?.apply { position = latLng } }
     }
 
     private fun hasLocationPermission() =
@@ -97,7 +173,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //    }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+        mMap = googleMap.apply {
+            setOnMapClickListener { latLng ->
+                addOrMoveSelectedPositionMarker(latLng)
+            }
+        }
         when {
             hasLocationPermission() -> getLocation()
             shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION) -> {
