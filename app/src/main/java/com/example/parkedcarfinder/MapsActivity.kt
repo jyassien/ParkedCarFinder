@@ -1,5 +1,6 @@
 package com.example.parkedcarfinder
 
+import android.Manifest
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.example.parkedcarfinder.databinding.ActivityMapsBinding
 
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.gms.location.LocationServices
@@ -76,13 +78,30 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     // Added methods
     private fun getLocation() {
         Log.d("MapsActivity", "getLocation() called.")
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
         fusedLocationProviderClient.lastLocation.addOnSuccessListener {
                 location: Location? ->
             location?.let {
                 val userLocation = LatLng(location.latitude, location.longitude)
-                val CO = LatLng(39.0, -105.0)
-                updateMapLocation(CO)
-                addMarkerAtLocation(CO, "You In Colorado")
+//                val CO = LatLng(39.0, -105.0)
+                updateMapLocation(userLocation)
+                addMarkerAtLocation(userLocation, "Your Location")
             }}
     }
 
@@ -130,7 +149,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun addOrMoveSelectedPositionMarker(latLng: LatLng) {
         if (marker == null) {
             marker = addMarkerAtLocation(latLng, "Park Here",
-                getBitmapDescriptorFromVector(R.drawable.parking_icon)
+                getBitmapDescriptorFromVector(R.drawable.car_parking)
             )
         } else { marker?.apply { position = latLng } }
     }

@@ -44,6 +44,9 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("androidx.activity:activity-ktx:1.6.1")
 
+    val fragment_version = "1.8.1"
+    implementation("androidx.fragment:fragment-ktx:$fragment_version") 
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ParkedCarFinder</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="im_parked_here">I’m parked here</string>
 </resources>
