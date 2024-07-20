@@ -5,7 +5,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_detail_fragment">Hello detail fragment</string>
     <string name="im_parked_here">I’m parked here</string>
-<!--    <string name="parking_location">parked at: %d</string>-->
     <string name="parking_location">Parked at: %s</string>
 
 </resources>
