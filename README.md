@@ -1,6 +1,7 @@
 ### Group Memebers:
-*James Elves*         jelves@mudenver.edu
-*Jihadu Yassien*      jyassien@msudenver.edu
+*Jihadu Yassien*      jyassien@msudenver.edu  <br />
+*James Elves*         jelves@mudenver.edu   <br />
+
 
 
 ### Parked Car Finder App using google maps API:
