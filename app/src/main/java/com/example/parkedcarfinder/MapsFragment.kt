@@ -84,13 +84,27 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         view?.findViewById<Button>(R.id.parked_button)?.setOnClickListener {
             parkLocation?.let {
-                locationViewModel.setParkedLocation(parkLoc)
+                locationViewModel.setParkedLocation(parkLocation.toString())
             }
 //            updateText(locationViewModel.location.value ?: parkLocation.toString())
             updateText(parkLocation.toString())
             Log.d("MapsFragment", "11. setOnClickListener called. parkLocation:${parkLocation?.toString() ?: "not set"}")
         }
     }
+
+//    private fun prepareViewModel(parkLoc: String) {
+//        moveCarIconToCurrentLocation()
+//        val locationViewModel = ViewModelProvider(requireActivity()).get(LocationViewModel::class.java)
+//        locationViewModel.location.observe(viewLifecycleOwner) { updatedLocation ->
+//            updateText(updatedLocation)
+//        }
+//
+//        view?.findViewById<Button>(R.id.parked_button)?.setOnClickListener {
+//            parkLocation?.let {
+//                locationViewModel.setParkedLocation(parkLoc)  // Updates location with new parked location
+//            }
+//        }
+//    }
 
     @SuppressLint("StringFormatMatches")
     private fun updateText(parkLoc: String) {

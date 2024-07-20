@@ -11,12 +11,15 @@ class LocationViewModel : ViewModel() {
     val location: LiveData<String> = _location
 
     init {
-        _location.value = ""
+        _location.value = "Select a location to park your car"
     }
 
-    fun setParkedLocation(parkedLoc: String) {
-        _location.value = (_location.value ?: "") + parkedLoc
-    }
+//    fun setParkedLocation(parkedLoc: String) {
+//        _location.value = (_location.value ?: "") + parkedLoc
+//    }
+fun setParkedLocation(parkedLoc: String) {
+    _location.value = parkedLoc
+}
 }
 
 

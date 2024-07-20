@@ -2,6 +2,7 @@ package com.example.parkedcarfinder
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
+
 class DetailFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
@@ -20,7 +22,6 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
@@ -28,11 +29,14 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Find the TextView and set its text
         val detailTextView = view.findViewById<TextView>(R.id.fragment_detail_view)
-        detailTextView.text = getString(R.string.parking_location, "0")
+        if (detailTextView != null) {
+            detailTextView.text = getString(R.string.parking_location, "0")
+        } else {
+            Log.e("DetailFragment", "TextView not found")
+        }
 
-        val locationViewModel = ViewModelProvider(requireActivity())[LocationViewModel::class.java]
+        val locationViewModel = ViewModelProvider(requireActivity()).get(LocationViewModel::class.java)
         locationViewModel.location.observe(viewLifecycleOwner) { location ->
             updateText(location)
         }
@@ -44,14 +48,6 @@ class DetailFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailFragment.
-         */
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             DetailFragment().apply {
@@ -63,6 +59,59 @@ class DetailFragment : Fragment() {
     }
 }
 
+
+
+//class DetailFragment : Fragment() {
+//    private var param1: String? = null
+//    private var param2: String? = null
+//
+//    override fun onCreateView(
+//        inflater: LayoutInflater, container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        // Inflate the layout for this fragment
+//        return inflater.inflate(R.layout.fragment_detail, container, false)
+//    }
+//
+//    @SuppressLint("StringFormatMatches")
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        // Find the TextView and set its text
+//        val detailTextView = view.findViewById<TextView>(R.id.fragment_detail_view)
+//        detailTextView.text = getString(R.string.parking_location, "0")
+//
+//        val locationViewModel = ViewModelProvider(requireActivity())[LocationViewModel::class.java]
+//        locationViewModel.location.observe(viewLifecycleOwner) { location ->
+//            updateText(location)
+//        }
+//    }
+//
+//    @SuppressLint("StringFormatMatches")
+//    private fun updateText(location: String) {
+//        view?.findViewById<TextView>(R.id.fragment_detail_view)?.text = getString(R.string.parking_location, location)
+//    }
+//
+//    companion object {
+//        /**
+//         * Use this factory method to create a new instance of
+//         * this fragment using the provided parameters.
+//         *
+//         * @param param1 Parameter 1.
+//         * @param param2 Parameter 2.
+//         * @return A new instance of fragment DetailFragment.
+//         */
+//        @JvmStatic
+//        fun newInstance(param1: String, param2: String) =
+//            DetailFragment().apply {
+//                arguments = Bundle().apply {
+//                    putString(ARG_PARAM1, param1)
+//                    putString(ARG_PARAM2, param2)
+//                }
+//            }
+//    }
+//}
+//
 
 
 //package com.example.parkedcarfinder
