@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android ="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <fragment
-        android:id="@+id/mapsFragment"
-        android:name="com.example.parkedcarfinder.MapsFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MapsFragment" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.fragment.app.FragmentContainerView
+    android:id="@+id/map"
+    android:name="com.example.parkedcarfinder.MapsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="3" />
+
+    <androidx.fragment.app.FragmentContainerView
+    android:id="@+id/activity_fragment_split_detail"
+    android:name="com.example.parkedcarfinder.DetailFragment"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1" />
+</LinearLayout>
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".MainActivity">-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/mapsFragment"-->
+<!--        android:name="com.example.parkedcarfinder.MapsFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        tools:context=".MapsFragment" />-->
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

@@ -45,7 +45,10 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.6.1")
 
     val fragment_version = "1.8.1"
-    implementation("androidx.fragment:fragment-ktx:$fragment_version") 
+    implementation("androidx.fragment:fragment-ktx:$fragment_version")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
