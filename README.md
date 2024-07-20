@@ -2,6 +2,12 @@
 *James Elves*         jelves@mudenver.edu
 *Jihadu Yassien*      jyassien@msudenver.edu
 
+###How to run the app:
+
+Update AndroidManifest.xml with your google maps API key:
+<meta-data
+android:name="com.google.android.geo.API_KEY"
+`android:value=""` />
 
 ###Parked Car Finder App using google maps API:
 
